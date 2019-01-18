@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p id="counter">10</p>
+<script>
+    let id = window.setInterval(countDown, 1000);
+
+    function countDown() {
+        let elmt = document.getElementById('counter');
+        let v = parseInt(elmt.innerText);
+
+        if (v === 0) {
+            window.clearInterval(id);
+        }
+        else {
+            elmt.innerText = (v - 1).toString();
+        }
+    }
+</script>
+</body>
+</html>
