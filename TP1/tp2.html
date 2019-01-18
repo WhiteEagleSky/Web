@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #square {
+            width: 100px;
+            height: 100px;
+            background: red;
+            position: fixed;
+        }
+    </style>
+</head>
+<body>
+<div id="square"></div>
+<script>
+    window.setInterval(moveSquare, 100);
+    let toRight = true;
+
+    function moveSquare() {
+        let elmt = document.getElementById('square');
+        let x = parseInt(elmt.style.left);
+
+        if (Number.isNaN(x)) {
+            x = 0;
+        }
+
+        if (toRight) {
+            elmt.style.left = (x + 10) + 'px';
+            if (x + 10 >= (window.innerWidth - elmt.offsetWidth)) {
+                toRight = false;
+            }
+        }
+        else {
+            elmt.style.left = (x - 10) + 'px';
+            if (x - 10 <= 0) {
+                toRight = true;
+            }
+        }
+    }
+</script>
+</body>
+</html>
