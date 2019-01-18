@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .square {
+            width: 100px;
+            height: 100px;
+            background: red;
+            position: fixed;
+        }
+
+        #square1 {
+            top: 20px;
+        }
+
+        #square2 {
+            top: 140px;
+        }
+
+        #square3 {
+            top: 260px;
+        }
+    </style>
+</head>
+<body>
+<div id="square1" class="square" data-to-right="true"></div>
+<div id="square2" class="square" data-to-right="true"></div>
+<div id="square3" class="square" data-to-right="true"></div>
+<script>
+    window.setInterval(moveSquare, 100, 'square1');
+    window.onload = function () {
+        window.setTimeout(function () {
+            window.setInterval(moveSquare, 100, 'square2');
+        }, 1000);
+        window.setTimeout(function () {
+            window.setInterval(moveSquare, 100, 'square3');
+        }, 4000);
+    };
+
+    function moveSquare(target) {
+        let elmt = document.getElementById(target);
+        let x = parseInt(elmt.style.left);
+
+        if (Number.isNaN(x)) {
+            x = 0;
+        }
+
+        if (elmt.getAttribute('data-to-right') === 'true') {
+            elmt.style.left = (x + 10) + 'px';
+            if (x + 10 >= (window.innerWidth - elmt.offsetWidth)) {
+                elmt.setAttribute('data-to-right', 'false');
+            }
+        }
+        else {
+            elmt.style.left = (x - 10) + 'px';
+            if (x - 10 <= 0) {
+                elmt.setAttribute('data-to-right', 'true');
+            }
+        }
+    }
+</script>
+</body>
+</html>
