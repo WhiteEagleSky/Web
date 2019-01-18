@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .square {
+            float: left;
+            width: 100px;
+            height: 100px;
+            background: red;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<script>
+    setup(10);
+
+    function setup(count) {
+        for (let i = 0; i < count; i++) {
+            let elmt = document.createElement('div');
+            elmt.id = 'square' + i;
+            elmt.style.top = (20 + 100 * i + 20 * i) + 'px';
+            elmt.className = 'square';
+            elmt.setAttribute('data-to-right', 'true');
+            document.body.appendChild(elmt);
+
+        }
+
+        window.onload = function () {
+            for (let i = 0; i < count; i++) {
+                window.setTimeout(function () {
+                    window.setInterval(moveSquare, 100, 'square' + i);
+                }, 1000 * i);
+            }
+        }
+    }
+
+    function moveSquare(target) {
+        let elmt = document.getElementById(target);
+        let x = parseInt(elmt.style.left);
+
+        if (Number.isNaN(x)) {
+            x = 0;
+        }
+
+        if (elmt.getAttribute('data-to-right') === 'true') {
+            elmt.style.left = (x + 10) + 'px';
+            if (x + 10 >= (window.innerWidth - elmt.offsetWidth)) {
+                elmt.setAttribute('data-to-right', 'false');
+            }
+        }
+        else {
+            elmt.style.left = (x - 10) + 'px';
+            if (x - 10 <= 0) {
+                elmt.setAttribute('data-to-right', 'true');
+            }
+        }
+    }
+</script>
+</body>
+</html>
