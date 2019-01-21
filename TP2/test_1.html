@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-    #animatedElem {
-        height: 100px;
-        width: 100px;
-        background: red;
-        position: absolute;
-        left: 500px;
-    }
+        #animatedElem {
+            height: 100px;
+            width: 100px;
+            background: red;
+            position: absolute;
+            left: 500px;
+        }
     </style>
 </head>
 <body>
@@ -28,6 +28,7 @@
         elemt.style.left = (left -= 10) + "px";
         if (left <= 0) {
             clearInterval(timer);
+            elemt.style.left = '0px';
         }
     }, 16);
 

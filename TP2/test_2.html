@@ -27,10 +27,11 @@
     timer = setInterval(function () {
         pausecomp(200);
         let dt = performance.now() - time;
-        elemt.style.left = (left -= 10/dt*16) + "px";
+        elemt.style.left = (left -= 10 / dt * 16) + "px";
         time = performance.now();
         if (left <= 0) {
             clearInterval(timer);
+            elemt.style.left = '0px';
         }
     }, 16);
 
