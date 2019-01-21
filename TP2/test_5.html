@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #animatedElem {
+            height: 100px;
+            width: 100px;
+            background: red;
+            position: absolute;
+            left: 500px;
+        }
+    </style>
+</head>
+<body>
+<div id="animatedElem"></div>
+
+<script>
+    var elemt = document.getElementById("animatedElem");
+    var left = elemt.getBoundingClientRect().left;
+    let time = null;
+    let fps = 60;
+
+    window.requestAnimationFrame(step);
+
+    function step(timestamp) {
+        if (!time) {
+            time = timestamp;
+            window.setTimeout(function () {
+                window.requestAnimationFrame(step);
+            }, 1 / fps * 1000);
+            return;
+        }
+
+        let dt = timestamp - time;
+        console.log(dt);
+        elemt.style.left = (left -= 10 / dt * 16) + "px";
+
+        if (left > 0) {
+            window.setTimeout(function () {
+                window.requestAnimationFrame(step);
+            }, 1 / fps * 1000);
+            time = timestamp;
+        }
+        else {
+            elemt.style.left = '0px';
+        }
+    }
+</script>
+</body>
+</html>
