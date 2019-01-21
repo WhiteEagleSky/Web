@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #can {
+            width: 500px;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+<canvas id="can"></canvas>
+<script>
+    var mainloop = function () {
+        updateGame();
+        drawGame();
+    };
+
+    let time = performance.now();
+    let ctx = document.getElementById('can').getContext('2d');
+    var img = new Image();
+    img.src = 'images/coin-sprite-animation.png';
+    let frame = 0;
+    let fps = 30;
+    var frameSize = 100;
+
+
+    function updateGame() {
+        frame = (frame + 1) % 9;
+    }
+
+    function drawGame() {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, frameSize, frameSize);
+        ctx.drawImage(img,
+            (1 + frame) * frameSize,
+            0,
+            frameSize,
+            frameSize,
+            0,
+            0,
+            frameSize,
+            frameSize
+        );
+    }
+
+    var recursiveAnim = function () {
+        mainloop();
+        window.setTimeout(function () {
+            window.requestAnimationFrame(recursiveAnim);
+        }, 1 / fps * 1000);
+    };
+
+    // start the mainloop
+    window.requestAnimationFrame(recursiveAnim);
+</script>
+</body>
+</html>
