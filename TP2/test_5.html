@@ -25,9 +25,9 @@
     window.requestAnimationFrame(step);
 
     function step(timestamp) {
-        if (!time) {
+        if(!time) {
             time = timestamp;
-            window.setTimeout(function () {
+            window.setTimeout(function() {
                 window.requestAnimationFrame(step);
             }, 1 / fps * 1000);
             return;
@@ -37,8 +37,8 @@
         console.log(dt);
         elemt.style.left = (left -= 10 / dt * 16) + "px";
 
-        if (left > 0) {
-            window.setTimeout(function () {
+        if(left > 0) {
+            window.setTimeout(function() {
                 window.requestAnimationFrame(step);
             }, 1 / fps * 1000);
             time = timestamp;

@@ -25,7 +25,7 @@
     window.requestAnimationFrame(step);
 
     function step(timestamp) {
-        if (!time) {
+        if(!time) {
             time = timestamp;
             window.requestAnimationFrame(step);
             return;
@@ -33,7 +33,7 @@
         let dt = timestamp - time;
         pausecomp(100);
         elemt.style.left = (left -= 10 / dt * 16) + "px";
-        if (left > 0) {
+        if(left > 0) {
             window.requestAnimationFrame(step);
             time = timestamp;
         }
@@ -47,7 +47,7 @@
         var curDate = null;
         do {
             curDate = new Date();
-        } while (curDate - date < millis);
+        } while(curDate - date < millis);
     }
 </script>
 </body>

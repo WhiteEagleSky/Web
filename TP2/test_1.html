@@ -23,10 +23,10 @@
     var timer;
 
     // Move the element 10px on the left every 16ms
-    timer = setInterval(function () {
+    timer = setInterval(function() {
         pausecomp(200);
         elemt.style.left = (left -= 10) + "px";
-        if (left <= 0) {
+        if(left <= 0) {
             clearInterval(timer);
             elemt.style.left = '0px';
         }
@@ -37,7 +37,7 @@
         var curDate = null;
         do {
             curDate = new Date();
-        } while (curDate - date < millis);
+        } while(curDate - date < millis);
     }
 </script>
 </body>

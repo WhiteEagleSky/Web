@@ -22,19 +22,19 @@
         let elmt = document.getElementById('square');
         let x = parseInt(elmt.style.left);
 
-        if (Number.isNaN(x)) {
+        if(Number.isNaN(x)) {
             x = 0;
         }
 
-        if (toRight) {
+        if(toRight) {
             elmt.style.left = (x + 10) + 'px';
-            if (x + 10 >= (window.innerWidth - elmt.offsetWidth)) {
+            if(x + 10 >= (window.innerWidth - elmt.offsetWidth)) {
                 toRight = false;
             }
         }
         else {
             elmt.style.left = (x - 10) + 'px';
-            if (x - 10 <= 0) {
+            if(x - 10 <= 0) {
                 toRight = true;
             }
         }
