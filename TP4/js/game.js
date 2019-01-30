@@ -1,150 +1,154 @@
-var animFrame = window.requestAnimationFrame ||
-            window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame    ||
-            window.oRequestAnimationFrame      ||
-            window.msRequestAnimationFrame     ||
-            null;
+let animFrame = window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    null;
 
 //Canvas
-var divArena;
-var canArena;
-var conArena;
-var ArenaWidth = 500;
-var ArenaHeight = 300;
+let divArena;
+let canArena;
+let conArena;
+let ArenaWidth = 500;
+let ArenaHeight = 300;
 
 //Background
-var imgBackground;
-var xBackgroundOffset = 0;
-var xBackgroundSpeed = 1;
-var backgroundWidth = 1782;
-var backgroundHeight = 600;
+let imgBackground;
+let xBackgroundOffset = 0;
+let xBackgroundSpeed = 1;
+let backgroundWidth = 1782;
+let backgroundHeight = 600;
 
 ///////////////////////////////////
 //Keys
-var keys = {
+let keys = {
     UP: 38,
     DOWN: 40,
     SPACE: 32,
     ENTER: 13
 };
 
-var keyStatus = {};
+let keyStatus = {};
 
 function keyDownHandler(event) {
-    "use strict"; 
-    var keycode = event.keyCode, 
-        key; 
-    for (key in keys) {
-        if (keys[key] === keycode) {
+    "use strict";
+    let keycode = event.keyCode,
+        key;
+    for(key in keys) {
+        if(keys[key] === keycode) {
             keyStatus[keycode] = true;
             event.preventDefault();
         }
     }
 }
+
 function keyUpHandler(event) {
-   var keycode = event.keyCode,
-            key;
-    for (key in keys) 
-        if (keys[key] == keycode) {
+    let keycode = event.keyCode,
+        key;
+    for(key in keys)
+        if(keys[key] == keycode) {
             keyStatus[keycode] = false;
         }
-        
-    }
-///////////////////////////////////
 
+}
+
+///////////////////////////////////
 
 
 /////////////////////////////////
 // Hero Player
-var imgPlayer = new Image();
-imgPlayer.src = "./assets/Ship/f1.png";
-var xPlayer = 20;
-var yPlayerSpeed = 10;
-var yPlayer = 100;
-var PlayerHeight = 15;
-var PlayerWidth = 32;
-var PlayerImgHeight = 29;
-var PlayerImgWidth = 64;
+let player = new Player();
+
 /////////////////////////////////
 
 
-
 function updateScene() {
-    "use strict"; 
+    "use strict";
     xBackgroundOffset = (xBackgroundOffset - xBackgroundSpeed) % backgroundWidth;
 }
+
 function updateItems() {
-    "use strict"; 
+    "use strict";
     clearItems();
-    
-    var keycode;
-    for (keycode in keyStatus) {
-            if(keyStatus[keycode] == true){
-                if(keycode == keys.UP) { 
-                    yPlayer -= yPlayerSpeed;   
-                }
-                if(keycode == keys.DOWN) { 
-                    yPlayer += yPlayerSpeed;   
-                } 
-                if(keycode == keys.Space) { 
-                    //shoot
-                }             
+
+    let keycode;
+    for(keycode in keyStatus) {
+        if(keyStatus[keycode] === true) {
+            if(keycode == keys.UP) {
+                player.moveUp();
             }
+            if(keycode == keys.DOWN) {
+                player.moveDown();
+            }
+            if(keycode == keys.SPACE) {
+                //shoot
+            }
+        }
         keyStatus[keycode] = false;
     }
 }
+
 function drawScene() {
-    "use strict"; 
-    canArena.style.backgroundPosition = xBackgroundOffset + "px 0px" ;
+    "use strict";
+    canArena.style.backgroundPosition = xBackgroundOffset + "px 0px";
+
+    conArena.font = "bold 20px Comic Sans MS";
+    conArena.fillStyle = "#419eff";
+    //conArena.strokeStyle = "#00c3ff";
+    conArena.textAlign = "left";
+    conArena.fillText("Score", 10, 20);
+    conArena.strokeText("Score", 10, 20);
 }
+
 function drawItems() {
-    "use strict"; 
-    conArena.drawImage(imgPlayer, 0,0,PlayerImgWidth,PlayerImgHeight, xPlayer,yPlayer,PlayerWidth,PlayerHeight);
+    "use strict";
+    conArena.drawImage(player.img, 0, 0, player.imgWidth, player.imgHeight, player.x, player.y, player.playerWidth, player.playerHeight);
 }
+
 function clearItems() {
-    "use strict"; 
-    conArena.clearRect(xPlayer,yPlayer,PlayerWidth,PlayerHeight);
+    "use strict";
+    conArena.clearRect(player.x, player.y, player.playerWidth, player.playerHeight);
 }
 
 function updateGame() {
-    "use strict"; 
+    "use strict";
     updateScene();
     updateItems();
 }
 
 function drawGame() {
-    "use strict"; 
+    "use strict";
     drawScene();
-    drawItems();    
+    drawItems();
 }
 
 
-function mainloop () {
-    "use strict"; 
+function mainloop() {
+    "use strict";
     updateGame();
     drawGame();
 }
 
-function recursiveAnim () {
-    "use strict"; 
+function recursiveAnim() {
+    "use strict";
     mainloop();
-    animFrame( recursiveAnim );
+    animFrame(recursiveAnim);
 }
- 
+
 function init() {
     "use strict";
     divArena = document.getElementById("arena");
     canArena = document.createElement("canvas");
     canArena.setAttribute("id", "canArena");
+    canArena.setAttribute("height", ArenaHeight);
+    canArena.setAttribute("width", ArenaWidth);
     conArena = canArena.getContext("2d");
     divArena.appendChild(canArena);
- 
-    
-window.addEventListener("keydown", keyDownHandler, false);
-window.addEventListener("keyup", keyUpHandler, false);
-    
-    animFrame( recursiveAnim );
-    
+
+    window.addEventListener("keydown", keyDownHandler, false);
+    window.addEventListener("keyup", keyUpHandler, false);
+
+    animFrame(recursiveAnim);
 }
 
 window.addEventListener("load", init, false);
