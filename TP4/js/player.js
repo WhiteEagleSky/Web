@@ -16,4 +16,8 @@ function Player(){
     this.moveDown = function() {
         this.y += this.ySpeed
     };
+    this.getCollisionRect = function() {
+        return {x: this.x, y: this.y,
+            width: this.playerWidth, height: this.playerHeight};
+    };
 }
