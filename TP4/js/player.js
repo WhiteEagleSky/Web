@@ -12,8 +12,8 @@ function Player(){
 
     this.moveUp = function() {
         this.y -= this.ySpeed;
-    }
+    };
     this.moveDown = function() {
         this.y += this.ySpeed
-    }
+    };
 }

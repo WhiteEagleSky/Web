@@ -13,11 +13,9 @@ let ArenaWidth = 500;
 let ArenaHeight = 300;
 
 //Background
-let imgBackground;
 let xBackgroundOffset = 0;
 let xBackgroundSpeed = 1;
 let backgroundWidth = 1782;
-let backgroundHeight = 600;
 
 ///////////////////////////////////
 //Keys
@@ -45,11 +43,11 @@ function keyDownHandler(event) {
 function keyUpHandler(event) {
     let keycode = event.keyCode,
         key;
-    for(key in keys)
-        if(keys[key] == keycode) {
+    for(key in keys) {
+        if(keys[key] === keycode) {
             keyStatus[keycode] = false;
         }
-
+    }
 }
 
 ///////////////////////////////////
@@ -58,9 +56,16 @@ function keyUpHandler(event) {
 /////////////////////////////////
 // Hero Player
 let player = new Player();
-
+let score = 0;
 /////////////////////////////////
 
+let lasers = [];
+
+function arrayRemove(arr, value) {
+    return arr.filter(function(ele) {
+        return ele !== value;
+    });
+}
 
 function updateScene() {
     "use strict";
@@ -73,18 +78,31 @@ function updateItems() {
 
     let keycode;
     for(keycode in keyStatus) {
+        // noinspection JSUnfilteredForInLoop
         if(keyStatus[keycode] === true) {
+            // noinspection EqualityComparisonWithCoercionJS
             if(keycode == keys.UP) {
                 player.moveUp();
             }
+            // noinspection EqualityComparisonWithCoercionJS
             if(keycode == keys.DOWN) {
                 player.moveDown();
             }
+            // noinspection EqualityComparisonWithCoercionJS
             if(keycode == keys.SPACE) {
-                //shoot
+                lasers.push(new Laser(player.x+player.playerWidth/4, player.y+player.playerHeight/4))
             }
         }
+        // noinspection JSUnfilteredForInLoop
         keyStatus[keycode] = false;
+    }
+
+    let laser;
+    for(laser in lasers) {
+        lasers[laser].updatePosition();
+        if(lasers[laser].x > ArenaWidth) {
+            lasers.splice(laser, 1);
+        }
     }
 }
 
@@ -96,18 +114,28 @@ function drawScene() {
     conArena.fillStyle = "#419eff";
     //conArena.strokeStyle = "#00c3ff";
     conArena.textAlign = "left";
-    conArena.fillText("Score", 10, 20);
-    conArena.strokeText("Score", 10, 20);
+    conArena.fillText("Score: " + score, 10, 20);
+    conArena.strokeText("Score: " + score, 10, 20);
 }
 
 function drawItems() {
     "use strict";
     conArena.drawImage(player.img, 0, 0, player.imgWidth, player.imgHeight, player.x, player.y, player.playerWidth, player.playerHeight);
+
+    let laser;
+    for(laser of lasers) {
+        conArena.fillStyle = "red";
+        conArena.fillRect(laser.x + laser.width / 2, laser.y + laser.height / 2, laser.width, laser.height);
+    }
 }
 
 function clearItems() {
     "use strict";
     conArena.clearRect(player.x, player.y, player.playerWidth, player.playerHeight);
+    let laser;
+    for(laser of lasers) {
+        conArena.clearRect(laser.x - laser.width / 2, laser.y - laser.height / 2, laser.width*2, laser.height*2);
+    }
 }
 
 function updateGame() {
@@ -140,8 +168,8 @@ function init() {
     divArena = document.getElementById("arena");
     canArena = document.createElement("canvas");
     canArena.setAttribute("id", "canArena");
-    canArena.setAttribute("height", ArenaHeight);
-    canArena.setAttribute("width", ArenaWidth);
+    canArena.setAttribute("height", ArenaHeight + "px");
+    canArena.setAttribute("width", ArenaWidth + "px");
     conArena = canArena.getContext("2d");
     divArena.appendChild(canArena);
 
