@@ -105,7 +105,7 @@ function updateItems() {
 
     sinceLastTarget++;
     if(sinceLastTarget > 100 * ((Math.random() * 10) % 3 + 1)) {
-        targets.push(new Target(ArenaWidth, Math.random() * ArenaHeight, Math.random() > 0.66));
+        targets.push(new Target(ArenaWidth, Math.random() * ArenaHeight));
         sinceLastTarget = 0;
     }
 
@@ -157,9 +157,8 @@ function updateItems() {
     for(let laser in lasers) {
         for(let target in targets) {
             if(detectCollision(targets[target].getCollisionRect(), lasers[laser].getCollisionRect())) {
-                targets[target].lives --;
-                if(targets[target].lives <= 0) {
-                    score += targets[target].t2 ? 2 : 1;
+                if(targets[target].targetType.takeHit()) {
+                    score += targets[target].targetType.score;
                     targets.splice(target, 1);
                 }
                 lasers.splice(laser, 1);
@@ -206,7 +205,7 @@ function drawItems() {
     }
 
     for(let target of targets) {
-        conArena.drawImage(target.img, 0, 0, target.imgWidth, target.imgHeight, target.x, target.y, target.targetWidth, target.targetHeight);
+        conArena.drawImage(target.targetType.img, 0, 0, target.imgWidth, target.imgHeight, target.x, target.y, target.targetWidth, target.targetHeight);
     }
 }
 

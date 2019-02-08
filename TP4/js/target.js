@@ -1,7 +1,31 @@
-function Target(x, y, t2) {
+function Target(x, y) {
     this.x = x;
     this.y = y;
-    this.t2 = t2;
+
+    this.targetTypes = {
+        0: {
+            score: 1,
+            weight: 1,
+            img: new Image(),
+            takeHit: function() {
+                return true;
+            },
+        },
+        1: {
+            score: 1,
+            weight: 0.33,
+            img: new Image(),
+            lives: 2,
+            takeHit: function() {
+                this.lives--;
+                return this.lives <= 0;
+            },
+        }
+    };
+
+    this.targetTypes[0].img.src = "./assets/Enemy/Example/e_f1.png";
+    this.targetTypes[1].img.src = "./assets/Enemy/Example/e2_f1.png";
+
     this.height = 4;
     this.width = 8;
     this.targetHeight = 30;
@@ -9,7 +33,7 @@ function Target(x, y, t2) {
     this.imgHeight = 40;
     this.imgWidth = 40;
     this.xSpeed = -1;
-    this.img = new Image();
+
     this.a = Math.random() * 2;
     // noinspection PointlessArithmeticExpressionJS
     this.a = Math.random() * 2 + 0;
@@ -19,9 +43,9 @@ function Target(x, y, t2) {
 
     this.t = 0;
     this.dt = 0.01;
-    this.lives = this.t2 ? 2 : 1;
 
-    this.img.src = this.t2 ? "./assets/Enemy/Example/e2_f1.png" : "./assets/Enemy/Example/e_f1.png";
+    // Load the correct type element into
+    this.targetType = this.targetTypes[0];
 
     this.yFunction = function(t) {
         return 1 / 3 * this.s * (Math.sin(this.a * t) + Math.sin(this.b * t) + Math.sin(this.c * t)) * ArenaHeight;
