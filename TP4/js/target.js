@@ -2,8 +2,8 @@ function Target(x, y) {
     this.x = x;
     this.y = y;
 
-    this.targetTypes = {
-        0: {
+    this.targetTypes = [
+        {
             score: 1,
             weight: 1,
             img: new Image(),
@@ -11,9 +11,9 @@ function Target(x, y) {
                 return true;
             },
         },
-        1: {
+        {
             score: 1,
-            weight: 0.33,
+            weight: 0.4,
             img: new Image(),
             lives: 2,
             takeHit: function() {
@@ -21,7 +21,7 @@ function Target(x, y) {
                 return this.lives <= 0;
             },
         }
-    };
+    ];
 
     this.targetTypes[0].img.src = "./assets/Enemy/Example/e_f1.png";
     this.targetTypes[1].img.src = "./assets/Enemy/Example/e2_f1.png";
@@ -45,7 +45,19 @@ function Target(x, y) {
     this.dt = 0.01;
 
     // Load the correct type element into
-    this.targetType = this.targetTypes[0];
+    let totalWeight = 0;
+    for(let targetT of this.targetTypes) {
+        totalWeight += targetT.weight;
+    }
+
+    let rand = Math.random() * totalWeight;
+    for(let targetT of this.targetTypes) {
+        rand -= targetT.weight;
+        if(rand <= 0) {
+            this.targetType = targetT;
+            break;
+        }
+    }
 
     this.yFunction = function(t) {
         return 1 / 3 * this.s * (Math.sin(this.a * t) + Math.sin(this.b * t) + Math.sin(this.c * t)) * ArenaHeight;
