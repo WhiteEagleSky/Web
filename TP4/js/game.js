@@ -94,7 +94,7 @@ function updateItems() {
     clearItems();
 
     sinceLastTarget++;
-    if(sinceLastTarget > 200) {
+    if(sinceLastTarget > 100 * ((Math.random() * 10) % 3 + 2)) {
         targets.push(new Target(ArenaWidth, Math.random() * ArenaHeight));
         sinceLastTarget = 0;
     }
@@ -147,6 +147,8 @@ function updateItems() {
         if(detectCollision(player.getCollisionRect(), target.getCollisionRect())) {
             alert("Game Over");
             targets.splice(target, 1);
+            score = 0;
+            return;
         }
     }
 }
