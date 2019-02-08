@@ -145,7 +145,10 @@ function updateItems() {
 
     for(let target of targets) {
         if(detectCollision(player.getCollisionRect(), target.getCollisionRect())) {
-            alert("Game Over");
+            document.body.className = "playerHit";
+            window.setTimeout(function() {
+                document.body.className = "";
+            }, 1010);
             targets.splice(target, 1);
             score = 0;
             return;
