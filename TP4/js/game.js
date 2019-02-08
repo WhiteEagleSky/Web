@@ -157,7 +157,7 @@ function updateItems() {
     for(let laser in lasers) {
         for(let target in targets) {
             if(detectCollision(targets[target].getCollisionRect(), lasers[laser].getCollisionRect())) {
-                if(targets[target].targetType.takeHit()) {
+                if(targets[target].targetType.takeHit(targets[target])) {
                     score += targets[target].targetType.score;
                     targets.splice(target, 1);
                 }
