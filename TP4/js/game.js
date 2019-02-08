@@ -84,6 +84,16 @@ function detectCollision(rect1, rect2) {
         rect1.height + rect1.y > rect2.y;
 }
 
+function logScore() {
+    if(score === 0) {
+        return;
+    }
+
+    let table = document.getElementById("scores");
+    let row = table.insertRow(table.rows.length);
+    row.insertCell(0).innerText = score + " pts";
+}
+
 function updateScene() {
     "use strict";
     xBackgroundOffset = (xBackgroundOffset - xBackgroundSpeed) % backgroundWidth;
@@ -94,8 +104,8 @@ function updateItems() {
     clearItems();
 
     sinceLastTarget++;
-    if(sinceLastTarget > 100 * ((Math.random() * 10) % 3 + 2)) {
-        targets.push(new Target(ArenaWidth, Math.random() * ArenaHeight));
+    if(sinceLastTarget > 100 * ((Math.random() * 10) % 3 + 1)) {
+        targets.push(new Target(ArenaWidth, Math.random() * ArenaHeight, Math.random() > 0.66));
         sinceLastTarget = 0;
     }
 
@@ -112,13 +122,22 @@ function updateItems() {
             }
             // noinspection EqualityComparisonWithCoercionJS
             if(keyCode == keys.SPACE) {
-                lasers.push(new Laser(player.x + player.playerWidth / 4, player.y + player.playerHeight / 4))
+                lasers.push(new Laser(player.x + player.imgWidth / 4, player.y + player.playerHeight / 4))
             }
         }
         // noinspection JSUnfilteredForInLoop
         keyStatus[keyCode] = false;
     }
 
+    // Player movement
+    if(player.targetY > player.y) {
+        player.y += player.ySpeed;
+    }
+    else if(player.targetY < player.y) {
+        player.y -= player.ySpeed;
+    }
+
+    // Laser movement
     for(let laser in lasers) {
         lasers[laser].updatePosition();
         if(lasers[laser].x > ArenaWidth) {
@@ -126,6 +145,7 @@ function updateItems() {
         }
     }
 
+    // Target movement
     for(let target in targets) {
         targets[target].updatePosition();
         if(targets[target].x < 0) {
@@ -133,16 +153,22 @@ function updateItems() {
         }
     }
 
+    // Laser collision with targets
     for(let laser in lasers) {
         for(let target in targets) {
             if(detectCollision(targets[target].getCollisionRect(), lasers[laser].getCollisionRect())) {
-                score ++;
-                targets.splice(target, 1);
+                targets[target].lives --;
+                if(targets[target].lives <= 0) {
+                    score += targets[target].t2 ? 2 : 1;
+                    targets.splice(target, 1);
+                }
                 lasers.splice(laser, 1);
+                break;
             }
         }
     }
 
+    // Player collision with target
     for(let target of targets) {
         if(detectCollision(player.getCollisionRect(), target.getCollisionRect())) {
             document.body.className = "playerHit";
@@ -150,6 +176,7 @@ function updateItems() {
                 document.body.className = "";
             }, 1010);
             targets.splice(target, 1);
+            logScore();
             score = 0;
             return;
         }
@@ -171,7 +198,7 @@ function drawScene() {
 
 function drawItems() {
     "use strict";
-    conArena.drawImage(player.img, 0, 0, player.imgWidth, player.imgHeight, player.x, player.y, player.playerWidth, player.playerHeight);
+    player.render(conArena);
 
     for(let laser of lasers) {
         conArena.fillStyle = "red";

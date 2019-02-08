@@ -33,3 +33,12 @@ body {
     margin: auto;
     display: block;
 }
+
+#scores {
+    margin: 10px auto auto;
+    color: #bdf5ff;
+}
+
+#scores th {
+    color: #00b8ff;
+}
