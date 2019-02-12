@@ -39,6 +39,7 @@ body {
     color: #bdf5ff;
 }
 
-#scores th {
+h2 {
     color: #00b8ff;
+    text-align: center;
 }

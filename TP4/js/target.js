@@ -56,7 +56,7 @@ function Target(x, y) {
     this.t = 0;
     this.dt = 0.01;
 
-    // Load the correct type element into
+    // Load the correct type element
     let totalWeight = 0;
     for(let targetT of this.targetTypes) {
         totalWeight += targetT.weight;

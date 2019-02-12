@@ -28,6 +28,7 @@ let keys = {
 
 let keyStatus = {};
 let canFire = true;
+let scores = [];
 
 function keyDownHandler(event) {
     "use strict";
@@ -89,9 +90,16 @@ function logScore() {
         return;
     }
 
+    scores.push(score);
+    scores.sort();
+    scores = scores.reverse().splice(0, 10);
+
     let table = document.getElementById("scores");
-    let row = table.insertRow(table.rows.length);
-    row.insertCell(0).innerText = score + " pts";
+    table.innerHTML = "";
+    for(let sc of scores) {
+        let row = table.insertRow(table.rows.length);
+        row.insertCell(0).innerText = sc + " pts";
+    }
 }
 
 function updateScene() {
