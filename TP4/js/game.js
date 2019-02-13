@@ -91,7 +91,7 @@ function logScore() {
     }
 
     scores.push(score);
-    scores.sort();
+    scores.sort((a, b) => b - a);
     scores = scores.reverse().splice(0, 10);
 
     let table = document.getElementById("scores");
